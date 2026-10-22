@@ -1,0 +1,3 @@
+-r requirements.txt
+aiomysql==0.3.2
+cryptography
