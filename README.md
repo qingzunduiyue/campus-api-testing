@@ -1,10 +1,12 @@
 # 教学管理接口测试与缺陷回归
 
-这是一个基于现有教学管理候选项目的测试练习包，演示如何从接口需求设计用例、核对数据库结果、复现缺陷，并验证最小修复。
+[![回归测试](https://github.com/qingzunduiyue/campus-api-testing/actions/workflows/tests.yml/badge.svg)](https://github.com/qingzunduiyue/campus-api-testing/actions/workflows/tests.yml)
+
+这是一个基于既有教学管理项目的测试练习包，演示如何从接口需求设计用例、核对数据库结果、复现缺陷，并验证最小修复。
 
 本地已执行同一组 9 项接口测试：原始快照 7 项通过、2 项业务断言失败；修复副本 9 项全部通过，两次运行均无执行错误。两项基线失败被保留下来用于复现，因此 `run_all.py` 会核对失败名称，并在结果符合预期时返回成功。
 
-这批测试和修复为本轮新建，不能据此声称用户过去已完成测试，或全部产品源码由用户独立开发。
+测试与修复实践于 2026 年 10 月补充完成；业务源码沿用既有项目，新增成果为测试用例、隔离执行器、缺陷修复与回归材料。
 
 ## 快速运行
 
@@ -54,7 +56,7 @@ verification_passed True
 - `requirements-test.txt`：本地已验证环境的直接和传递依赖版本。
 - `fixes.diff`：两项最小修复的差异。
 - `provenance.json`：必要源码文件的相对路径与 SHA-256，不含原始本机路径。
-- `.github/workflows/tests.yml`：GitHub Actions 配置，尚未在 GitHub 云端执行验证。
+- `.github/workflows/tests.yml`：GitHub Actions 配置，在 Windows 和 Ubuntu 上执行同一套回归。
 
 ## 9 项测试覆盖
 
@@ -84,13 +86,13 @@ verification_passed True
 
 SQLite 结果不证明 MySQL 特有约束、排序规则及并发行为正确。此处未执行浏览器、真实部署、CORS、上传下载、性能或负载测试，也没有使用 pytest、HTTPX、JMeter 或 Jenkins。
 
-本地验证环境是 Windows、Python 3.12.4。GitHub Actions 配置针对 Python 3.12 的 Windows 和 Ubuntu；云端运行和从空环境联网安装仍待验证。
+本地验证环境是 Windows、Python 3.12.4。GitHub Actions 已于 2026 年 10 月 22 日在 Python 3.12 的 Windows 和 Ubuntu 上从空环境安装依赖，并完成基线复现及修复回归。详见[云端执行记录](https://github.com/qingzunduiyue/campus-api-testing/actions/runs/39786151537)。
 
 ## 源码来源与发布状态
 
-现有候选代码实际采用 FastAPI 和 Tortoise ORM，当前模块为管理员、专业、班级。它与简历中的 SQLAlchemy 及学生 CRUD 表述存在版本差异，需要核对。
+业务快照采用 FastAPI 和 Tortoise ORM，当前覆盖管理员、专业和班级模块。
 
-业务代码基于既有 FastAPI 教学管理项目，本次新增内容为接口用例、隔离执行器、缺陷复现与回归材料。仓库不声明整个业务系统为独立开发；上游来源链接待补，目前未设置开源许可证。此目录为待发布版本，实际仓库创建及云端测试结果以 GitHub 页面为准。
+业务代码基于既有 FastAPI 教学管理项目，本次新增内容为接口用例、隔离执行器、缺陷复现与回归材料。仓库不声明整个业务系统为独立开发；上游来源链接待补，目前未设置开源许可证。项目已发布；可通过上方运行命令复现测试，并通过 Actions 查看云端验证结果。
 
 ## 建议阅读顺序
 
