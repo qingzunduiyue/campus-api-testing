@@ -1,0 +1,22 @@
+--- baseline/api/major.py
++++ fixed/api/major.py
+@@ -41,7 +41,7 @@
+         raise CustomException("缺少参数ID")
+     #判断专业代码是否重复
+     db_major = await Major.get_or_none(no=major_create_pydantic.no)
+-    if db_major is not None:
++    if db_major is not None and db_major.id != major_create_pydantic.id:
+         raise CustomException("专业代码重复")
+     #将参数转化为字典数据
+     create_data = major_create_pydantic.model_dump(exclude_unset=True,exclude={"id"})
+--- baseline/api/__init__.py
++++ fixed/api/__init__.py
+@@ -27,6 +27,8 @@
+ # 登录
+ @api_router.post("/login")
+ async def login(account: Account):
++    if account.role != '管理员':
++        raise CustomException("不支持的用户角色")
+     if account.role == '管理员':
+         admin = await Admin.get_or_none(username=account.username)
+         if admin is None:

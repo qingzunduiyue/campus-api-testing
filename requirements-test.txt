@@ -1,0 +1,17 @@
+# Python 3.12; versions read from the environment used for the verified run.
+# unittest, asyncio and sqlite3 are supplied by Python itself.
+aiosqlite==0.22.1
+annotated-doc==0.0.4
+annotated-types==0.7.0
+anyio==4.12.1
+fastapi==0.124.4
+idna==3.11
+iso8601==2.1.0
+pydantic==2.12.5
+pydantic-core==2.41.5
+pypika-tortoise==0.6.3
+pytz==2026.1.post1
+starlette==0.50.0
+tortoise-orm==0.25.4
+typing-extensions==4.15.0
+typing-inspection==0.4.2

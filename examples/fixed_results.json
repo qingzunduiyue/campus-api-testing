@@ -1,0 +1,443 @@
+{
+  "snapshot": "fixed",
+  "framework": "Python stdlib unittest",
+  "transport": "in-process ASGI caller; no server or network client",
+  "database": "new SQLite in-memory database for each test",
+  "tests_run": 9,
+  "passed": 9,
+  "assertion_failures": 0,
+  "execution_errors": 0,
+  "tests": [
+    {
+      "name": "test_class_creation_preserves_major_relationship",
+      "purpose": "Class majorId must be stored as the correct major_id and exposed in pagination.",
+      "status": "passed",
+      "evidence": [
+        {
+          "method": "POST",
+          "path": "/major/add",
+          "query": "",
+          "request": {
+            "no": "QA-MAJOR-A",
+            "name": "QA Major A",
+            "college": "QA College"
+          },
+          "response": {
+            "status": 200,
+            "body": {
+              "code": "200",
+              "msg": "请求成功",
+              "data": null
+            }
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/clazz/add",
+          "query": "",
+          "request": {
+            "no": "QA-CLASS-A",
+            "name": "QA Class A",
+            "teacher": "QA Teacher",
+            "majorId": 1
+          },
+          "response": {
+            "status": 200,
+            "body": {
+              "code": "200",
+              "msg": "请求成功",
+              "data": null
+            }
+          }
+        },
+        {
+          "database_check": {
+            "backend": "temporary SQLite",
+            "table": "clazz",
+            "rows": [
+              {
+                "id": 1,
+                "no": "QA-CLASS-A",
+                "name": "QA Class A",
+                "major_id": 1
+              }
+            ]
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/clazz/selectPage",
+          "query": "pageNum=1&pageSize=10",
+          "request": null,
+          "response": {
+            "status": 200,
+            "body": {
+              "code": "200",
+              "msg": "请求成功",
+              "data": {
+                "total": 1,
+                "list": [
+                  {
+                    "id": 1,
+                    "no": "QA-CLASS-A",
+                    "name": "QA Class A",
+                    "teacher": "QA Teacher",
+                    "majorId": 1,
+                    "majorName": "QA Major A"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "test_class_update_without_id_is_rejected",
+      "purpose": "Missing ID must not produce a successful class update.",
+      "status": "passed",
+      "evidence": [
+        {
+          "method": "PUT",
+          "path": "/clazz/update",
+          "query": "",
+          "request": {
+            "no": "QA-CLASS-A",
+            "name": "No ID"
+          },
+          "response": {
+            "status": 200,
+            "body": {
+              "code": "500",
+              "msg": "缺少参数ID"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "test_duplicate_major_create_is_rejected_without_extra_row",
+      "purpose": "The existing create rule rejects a repeated major code.",
+      "status": "passed",
+      "evidence": [
+        {
+          "method": "POST",
+          "path": "/major/add",
+          "query": "",
+          "request": {
+            "no": "QA-MAJOR-A",
+            "name": "QA Major A",
+            "college": "QA College"
+          },
+          "response": {
+            "status": 200,
+            "body": {
+              "code": "200",
+              "msg": "请求成功",
+              "data": null
+            }
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/major/add",
+          "query": "",
+          "request": {
+            "no": "QA-MAJOR-A",
+            "name": "Repeated",
+            "college": "QA College"
+          },
+          "response": {
+            "status": 200,
+            "body": {
+              "code": "500",
+              "msg": "专业代码重复"
+            }
+          }
+        },
+        {
+          "database_check": {
+            "backend": "temporary SQLite",
+            "table": "major",
+            "rows": [
+              {
+                "id": 1,
+                "no": "QA-MAJOR-A",
+                "name": "QA Major A",
+                "college": "QA College"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "test_invalid_class_id_has_business_validation_error",
+      "purpose": "A non-integer path parameter must return the configured validation response.",
+      "status": "passed",
+      "evidence": [
+        {
+          "method": "GET",
+          "path": "/clazz/selectById/not-an-integer",
+          "query": "",
+          "request": null,
+          "response": {
+            "status": 200,
+            "body": {
+              "code": "500",
+              "msg": "请求参数错误"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "test_login_unknown_admin_is_rejected",
+      "purpose": "An unknown administrator account must not authenticate.",
+      "status": "passed",
+      "evidence": [
+        {
+          "method": "POST",
+          "path": "/login",
+          "query": "",
+          "request": {
+            "username": "qa-does-not-exist",
+            "password": "[synthetic credential redacted]",
+            "role": "管理员"
+          },
+          "response": {
+            "status": 200,
+            "body": {
+              "code": "500",
+              "msg": "账号或密码错误"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "test_login_unsupported_role_is_rejected",
+      "purpose": "An unsupported role must not bypass the only implemented account check.",
+      "status": "passed",
+      "evidence": [
+        {
+          "method": "POST",
+          "path": "/login",
+          "query": "",
+          "request": {
+            "username": "qa-does-not-exist",
+            "password": "[synthetic credential redacted]",
+            "role": "QA-UNSUPPORTED-ROLE"
+          },
+          "response": {
+            "status": 200,
+            "body": {
+              "code": "500",
+              "msg": "不支持的用户角色"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "test_major_create_query_and_database_consistency",
+      "purpose": "Valid create and query must agree with stored data.",
+      "status": "passed",
+      "evidence": [
+        {
+          "method": "POST",
+          "path": "/major/add",
+          "query": "",
+          "request": {
+            "no": "QA-MAJOR-A",
+            "name": "QA Major A",
+            "college": "QA College"
+          },
+          "response": {
+            "status": 200,
+            "body": {
+              "code": "200",
+              "msg": "请求成功",
+              "data": null
+            }
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/major/selectById/1",
+          "query": "",
+          "request": null,
+          "response": {
+            "status": 200,
+            "body": {
+              "code": "200",
+              "msg": "请求成功",
+              "data": {
+                "name": "QA Major A",
+                "no": "QA-MAJOR-A",
+                "college": "QA College",
+                "id": 1
+              }
+            }
+          }
+        },
+        {
+          "database_check": {
+            "backend": "temporary SQLite",
+            "table": "major",
+            "rows": [
+              {
+                "id": 1,
+                "no": "QA-MAJOR-A",
+                "name": "QA Major A",
+                "college": "QA College"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "test_major_update_same_code_changes_name",
+      "purpose": "Editing a name without changing its own unique code must be allowed.",
+      "status": "passed",
+      "evidence": [
+        {
+          "method": "POST",
+          "path": "/major/add",
+          "query": "",
+          "request": {
+            "no": "QA-MAJOR-A",
+            "name": "QA Major A",
+            "college": "QA College"
+          },
+          "response": {
+            "status": 200,
+            "body": {
+              "code": "200",
+              "msg": "请求成功",
+              "data": null
+            }
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/major/update",
+          "query": "",
+          "request": {
+            "id": 1,
+            "no": "QA-MAJOR-A",
+            "name": "QA Major Renamed",
+            "college": "QA College"
+          },
+          "response": {
+            "status": 200,
+            "body": {
+              "code": "200",
+              "msg": "请求成功",
+              "data": null
+            }
+          }
+        },
+        {
+          "database_check": {
+            "backend": "temporary SQLite",
+            "table": "major",
+            "rows": [
+              {
+                "id": 1,
+                "no": "QA-MAJOR-A",
+                "name": "QA Major Renamed",
+                "college": "QA College"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "test_major_update_to_another_record_code_is_rejected",
+      "purpose": "The self-update fix must keep rejecting another record's major code.",
+      "status": "passed",
+      "evidence": [
+        {
+          "method": "POST",
+          "path": "/major/add",
+          "query": "",
+          "request": {
+            "no": "QA-MAJOR-A",
+            "name": "QA Major A",
+            "college": "QA College"
+          },
+          "response": {
+            "status": 200,
+            "body": {
+              "code": "200",
+              "msg": "请求成功",
+              "data": null
+            }
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/major/add",
+          "query": "",
+          "request": {
+            "no": "QA-MAJOR-B",
+            "name": "QA Major B",
+            "college": "QA College"
+          },
+          "response": {
+            "status": 200,
+            "body": {
+              "code": "200",
+              "msg": "请求成功",
+              "data": null
+            }
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/major/update",
+          "query": "",
+          "request": {
+            "id": 2,
+            "no": "QA-MAJOR-A",
+            "name": "Invalid Duplicate",
+            "college": "QA College"
+          },
+          "response": {
+            "status": 200,
+            "body": {
+              "code": "500",
+              "msg": "专业代码重复"
+            }
+          }
+        },
+        {
+          "database_check": {
+            "backend": "temporary SQLite",
+            "table": "major",
+            "rows": [
+              {
+                "id": 1,
+                "no": "QA-MAJOR-A",
+                "name": "QA Major A",
+                "college": "QA College"
+              },
+              {
+                "id": 2,
+                "no": "QA-MAJOR-B",
+                "name": "QA Major B",
+                "college": "QA College"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "original_main_or_settings_imported": false,
+  "runner_log": "See named test records and assertion messages; machine-specific tracebacks are omitted.",
+  "application_log": "Runtime stdout and stderr are omitted from portable results to avoid embedding local machine paths."
+}

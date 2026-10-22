@@ -1,0 +1,64 @@
+{
+  "purpose": "现有教学管理候选项目的隔离接口测试及缺陷回归练习。",
+  "authorship": "上游源码的完整作者归属和许可尚未确认；本材料不声明全部产品源码原创。",
+  "source_scope": "仅包含专业、班级、管理员相关的必要模型与接口，不含原始配置、数据库、上传文件或图片。",
+  "runtime_versions": "requirements-test.txt记录本地已执行测试所用依赖版本。",
+  "files": [
+    {
+      "path": "baseline/models.py",
+      "sha256": "c83ce3886493d8f7ddef05fd50007ee831725db5fd2ad459252e14f6b0b3bb78"
+    },
+    {
+      "path": "baseline/api/__init__.py",
+      "sha256": "ea1561a27801a35312189f5529524834c369f8b7fd58eb2e64d1f8e5800ea6aa"
+    },
+    {
+      "path": "baseline/api/admin.py",
+      "sha256": "a09b66f4183087e895be2375498c32d8689c6224c5970af4402c9c2d63428e3a"
+    },
+    {
+      "path": "baseline/api/major.py",
+      "sha256": "f1ef5a60247cb7b5ab3ebd8da96675b68195ad8f043c17725b3fbacda2fa7661"
+    },
+    {
+      "path": "baseline/api/clazz.py",
+      "sha256": "08d5bf8b7cd633085e51c968f3fe309b437890e423f93d2d3300df7f492e2b00"
+    },
+    {
+      "path": "baseline/common/exception_handler.py",
+      "sha256": "29725c126c1c9d9de41554d3cb39c67ee20a0ba6d724766a9ac6e9b4a56b97ed"
+    },
+    {
+      "path": "baseline/common/result.py",
+      "sha256": "11760fcb595e07712a1d72219b466ddda731a2d08295a5a49f93999bfbce7eec"
+    },
+    {
+      "path": "fixed/models.py",
+      "sha256": "c83ce3886493d8f7ddef05fd50007ee831725db5fd2ad459252e14f6b0b3bb78"
+    },
+    {
+      "path": "fixed/api/__init__.py",
+      "sha256": "9685bfb5003071d38b7be51f9851deef33f03d148f4f46b38b17c9db69fadab7"
+    },
+    {
+      "path": "fixed/api/admin.py",
+      "sha256": "a09b66f4183087e895be2375498c32d8689c6224c5970af4402c9c2d63428e3a"
+    },
+    {
+      "path": "fixed/api/major.py",
+      "sha256": "43959a580b4b7cd7623237541eb61bee18382b771d931a31dd75ff9faeb41a7d"
+    },
+    {
+      "path": "fixed/api/clazz.py",
+      "sha256": "08d5bf8b7cd633085e51c968f3fe309b437890e423f93d2d3300df7f492e2b00"
+    },
+    {
+      "path": "fixed/common/exception_handler.py",
+      "sha256": "29725c126c1c9d9de41554d3cb39c67ee20a0ba6d724766a9ac6e9b4a56b97ed"
+    },
+    {
+      "path": "fixed/common/result.py",
+      "sha256": "11760fcb595e07712a1d72219b466ddda731a2d08295a5a49f93999bfbce7eec"
+    }
+  ]
+}

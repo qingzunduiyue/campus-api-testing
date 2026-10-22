@@ -1,0 +1,39 @@
+{
+  "verification_passed": true,
+  "checks": {
+    "baseline_has_nine_tests": true,
+    "baseline_failures_match_documented_cases": true,
+    "baseline_has_seven_passes_and_two_assertion_failures": true,
+    "baseline_has_no_execution_errors": true,
+    "baseline_exit_code_is_one": true,
+    "fixed_all_nine_pass": true,
+    "fixed_has_no_failures_or_errors": true,
+    "fixed_exit_code_is_zero": true,
+    "original_main_and_settings_not_imported": true
+  },
+  "python": "3.12.4",
+  "platform": "Windows",
+  "dependencies": {
+    "aiosqlite": "0.22.1",
+    "annotated-doc": "0.0.4",
+    "annotated-types": "0.7.0",
+    "anyio": "4.12.1",
+    "fastapi": "0.124.4",
+    "idna": "3.11",
+    "iso8601": "2.1.0",
+    "pydantic": "2.12.5",
+    "pydantic-core": "2.41.5",
+    "pypika-tortoise": "0.6.3",
+    "pytz": "2026.1.post1",
+    "starlette": "0.50.0",
+    "tortoise-orm": "0.25.4",
+    "typing-extensions": "4.15.0",
+    "typing-inspection": "0.4.2"
+  },
+  "expected_baseline_failure_names": [
+    "test_login_unsupported_role_is_rejected",
+    "test_major_update_same_code_changes_name"
+  ],
+  "execution_scope": "Fresh in-memory SQLite per test, in-process ASGI, no original settings or network connections.",
+  "github_actions_status": "Configuration prepared; no GitHub-hosted run has been performed."
+}
